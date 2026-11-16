@@ -58,7 +58,7 @@ export default function Assistant() {
       {open && (
         <div role="dialog" aria-label="دستیار هوشمند" className="fixed inset-0 z-[70] md:inset-auto md:left-6 md:bottom-6 md:w-[24rem] md:h-[34rem] flex flex-col bg-[var(--card)] md:rounded-3xl md:border border-[var(--line)] shadow-2xl overflow-hidden" style={{ animation: "up .35s both cubic-bezier(.2,.8,.2,1)" }}>
           <div className="sunburst-soft text-white px-4 pt-[max(.75rem,env(safe-area-inset-top))] pb-3 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-black/30 grid place-items-center wordmark text-sm" dir="ltr">kg</div>
+            <img src="/brand/avatar.jpg" alt="خودروگرافی" width="150" height="150" className="w-10 h-10 rounded-full object-cover border-2 border-white/60" />
             <div><b>دستیار {brand.name}</b><div className="text-xs text-white/85 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-neon" />آنلاین · نسخه‌ی آزمایشی</div></div>
             <button onClick={() => setOpen(false)} aria-label="بستن" className="mr-auto w-10 h-10 rounded-full bg-black/25 text-xl press">×</button>
           </div>

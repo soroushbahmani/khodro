@@ -176,7 +176,7 @@ export default function Home() {
             </div>
           </div>
           <div className="reveal mx-auto w-full max-w-sm rounded-[2.2rem] border-[6px] border-night bg-[var(--card)] shadow-2xl overflow-hidden">
-            <div className="bg-night text-white px-4 py-3 flex items-center gap-3"><div className="ring"><div className="w-9 h-9 rounded-full sunburst-soft grid place-items-center wordmark text-xs" dir="ltr">kg</div></div><div><b className="text-sm">{ig.profile.handle}</b><div className="text-[11px] text-white/60">ایجنت هوشمند · آنلاین</div></div></div>
+            <div className="bg-night text-white px-4 py-3 flex items-center gap-3"><div className="ring"><img src="/brand/avatar.jpg" alt="خودروگرافی" width="150" height="150" className="w-9 h-9 rounded-full object-cover" /></div><div><b className="text-sm">{ig.profile.handle}</b><div className="text-[11px] text-white/60">ایجنت هوشمند · آنلاین</div></div></div>
             <div className="p-4 space-y-3 min-h-80 bg-[var(--bg)] text-sm leading-7">
               {[{ me: true, t: "سلام، کارشناسی تالیسمان ۱۴۰۱ چقدر می‌شود؟" }, { t: "سلام 👋 تعرفه به نوع خودرو و محل بازدید بستگی دارد. شهر شما کجاست؟" }, { me: true, t: "اصفهان" }, { t: "عالی؛ کارشناس را برای اصفهان هماهنگ می‌کنم. چه روزی مناسب است؟" }, { me: true, t: "پنجشنبه صبح" }, { t: "ثبت شد ✅ پرونده‌ی شما ساخته شد و همکارمان تأیید نهایی را می‌فرستد." }].map((m, i) => (
                 <div key={i} className={`flex ${m.me ? "justify-start" : "justify-end"}`} style={{ animation: `up .6s ${0.4 + i * 0.7}s both cubic-bezier(.2,.8,.2,1)` }}>
@@ -200,7 +200,7 @@ export default function Home() {
         <div className="mt-10 grid gap-6 lg:grid-cols-[21rem_1fr]">
           <div className="reveal card p-6">
             <div className="flex items-center gap-4">
-              <div className="ring"><div className="w-16 h-16 rounded-full sunburst-soft grid place-items-center border-2 border-[var(--card)]"><span className="wordmark text-lg" dir="ltr">kg</span></div></div>
+              <div className="ring"><img src="/brand/avatar.jpg" alt="خودروگرافی" width="150" height="150" className="w-16 h-16 rounded-full object-cover border-2 border-[var(--card)]" /></div>
               <div><div className="font-black">{ig.profile.displayName}</div><a href={brand.instagram} target="_blank" rel="noopener noreferrer" dir="ltr" className="text-sm text-brand font-bold">@{ig.profile.handle}</a></div>
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3 text-center">
