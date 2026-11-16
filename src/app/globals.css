@@ -18,7 +18,7 @@
 @media (prefers-color-scheme: dark) {
   :root { --bg:#0b0e13; --card:#141922; --fg:#f3f0ed; --muted:#a2a7b3; --line:#232a36; --glow:rgba(238,90,60,.22); }
 }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
 body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); overflow-x: hidden; }
 ::selection { background: var(--color-yellow); color: #14161c; }
@@ -59,3 +59,28 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); o
 :focus-visible { outline: 3px solid var(--color-yellow); outline-offset: 3px; }
 details > summary { list-style: none; } details > summary::-webkit-details-marker { display:none; }
 details[open] .plus { transform: rotate(45deg); }
+
+/* ---- native feel ---- */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: .25s ease both fade-out; }
+::view-transition-new(root) { animation: .35s ease both fade-in; }
+@keyframes fade-out { to { opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } }
+html { -webkit-tap-highlight-color: transparent; scroll-padding-top: 5rem; overscroll-behavior-y: none; }
+a, button, summary { touch-action: manipulation; }
+.press { transition: transform .15s; } .press:active { transform: scale(.96); }
+.btn:active { transform: scale(.96); }
+.no-bar { scrollbar-width: none; } .no-bar::-webkit-scrollbar { display: none; }
+.snap-row { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-inline: 1rem; margin-inline: -1rem; scroll-padding-inline: 1rem; -webkit-overflow-scrolling: touch; }
+.snap-row > * { scroll-snap-align: start; flex: 0 0 78%; }
+@media (min-width: 640px) { .snap-row { display: grid; overflow: visible; padding: 0; margin: 0; grid-template-columns: repeat(2, 1fr); } .snap-row > * { flex: initial; } }
+@media (min-width: 1024px) { .snap-cols-4 { grid-template-columns: repeat(4, 1fr); } .snap-cols-3 { grid-template-columns: repeat(3, 1fr); } }
+
+@keyframes up { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+.in1 { animation: up .8s .05s both cubic-bezier(.2,.8,.2,1); } .in2 { animation: up .8s .18s both cubic-bezier(.2,.8,.2,1); }
+.in3 { animation: up .8s .3s both cubic-bezier(.2,.8,.2,1); } .in4 { animation: up .8s .42s both cubic-bezier(.2,.8,.2,1); }
+@keyframes zoomslow { from { transform: scale(1.12); } to { transform: scale(1); } }
+.kenburns { animation: zoomslow 2.4s both cubic-bezier(.2,.8,.2,1); }
+@keyframes shimmer { to { transform: translateX(-120%); } }
+.shine { position: relative; overflow: hidden; } .shine::after { content:""; position:absolute; inset:0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%); transform: translateX(120%); animation: shimmer 3.5s 1s infinite; }
+.photo { position: relative; overflow: hidden; } .photo img { width:100%; height:100%; object-fit:cover; transition: transform .7s cubic-bezier(.2,.8,.2,1); } .photo:hover img { transform: scale(1.07); }

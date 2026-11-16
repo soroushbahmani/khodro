@@ -1,0 +1,24 @@
+{
+ "name": "خودروگرافی",
+ "short_name": "خودروگرافی",
+ "description": "قبل از خرید، خودرو را بخوان",
+ "start_url": "/",
+ "display": "standalone",
+ "dir": "rtl",
+ "lang": "fa",
+ "background_color": "#0d1015",
+ "theme_color": "#d63b22",
+ "icons": [
+  {
+   "src": "/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  }
+ ]
+}

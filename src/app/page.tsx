@@ -1,8 +1,10 @@
 import ig from "@/data/instagram.json";
 import { brand, services, steps, scoreBands, checklist, faqs, sampleReport, stats } from "@/data/site";
+import { Counter, Tilt } from "@/components/Client";
 import { IconSearch, IconPin, IconStar, IconCar, IconPlay, IconArrow, IconInsta } from "@/components/Icons";
 
 const icons: Record<string, React.ReactNode> = { search: <IconSearch />, pin: <IconPin />, star: <IconStar />, car: <IconCar /> };
+const photoFor = ["/photos/engine.jpg", "/photos/lot.jpg", "/photos/interior.jpg", "/photos/mustang.jpg"];
 const dot: Record<string, string> = { ok: "bg-emerald-500", warn: "bg-yellow", bad: "bg-crimson" };
 const stateLabel: Record<string, string> = { ok: "سالم", warn: "نیاز به توجه", bad: "معیوب" };
 
@@ -38,25 +40,26 @@ export default function Home() {
     <>
       {/* HERO */}
       <section className="sunburst grain relative text-white overflow-hidden">
-        <div className="mx-auto max-w-6xl px-4 pt-16 pb-10 lg:pt-24 grid lg:grid-cols-[1.1fr_.9fr] gap-10 items-center">
+        <img src="/photos/hero.jpg" alt="" aria-hidden className="kenburns absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity lg:opacity-40 [mask-image:linear-gradient(to_left,transparent,black_60%)]" />
+        <div className="relative z-10 mx-auto max-w-6xl px-4 pt-12 pb-10 lg:pt-24 grid lg:grid-cols-[1.1fr_.9fr] gap-10 items-center [&>*]:min-w-0">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-black/30 backdrop-blur px-4 py-1.5 text-sm font-bold"><span className="w-2 h-2 rounded-full bg-neon animate-pulse" />متخصص آموزش خرید و فروش خودرو</span>
-            <div className="wordmark text-6xl sm:text-8xl mt-6" dir="ltr">{brand.latin}</div>
-            <h1 className="mt-4 text-3xl sm:text-5xl font-black leading-[1.25]">قبل از خرید، <span className="grad-text">خودرو را بخوان</span></h1>
-            <p className="mt-5 max-w-xl text-lg text-white/90 leading-8">{brand.description}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <span className="in1 inline-flex items-center gap-2 rounded-full bg-black/30 backdrop-blur px-4 py-1.5 text-sm font-bold"><span className="w-2 h-2 rounded-full bg-neon animate-pulse" />متخصص آموزش خرید و فروش خودرو</span>
+            <div className="in2 wordmark text-[2.7rem] leading-none sm:text-8xl mt-6" dir="ltr">{brand.latin}</div>
+            <h1 className="in3 mt-4 text-3xl sm:text-5xl font-black leading-[1.25]">قبل از خرید، <span className="grad-text">خودرو را بخوان</span></h1>
+            <p className="in3 mt-5 max-w-xl text-base sm:text-lg text-white/90 leading-8">{brand.description}</p>
+            <div className="in4 mt-8 flex flex-wrap gap-3">
               <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow"><IconInsta />پیام در اینستاگرام</a>
               <a href="#report" className="btn btn-ghost">دیدن گزارش نمونه<IconArrow /></a>
             </div>
           </div>
           <div className="relative">
-            <div className="floaty card !bg-white/95 text-ink !border-white/40 p-5 shadow-2xl max-w-sm mx-auto backdrop-blur">
+            <Tilt className="in4"><div className="floaty card !bg-white/95 text-ink !border-white/40 p-5 shadow-2xl max-w-sm mx-auto backdrop-blur">
               <div className="flex items-center justify-between text-xs font-bold"><span>گزارش کارشناسی</span><span className="rounded-full bg-emerald-100 text-emerald-700 px-2 py-0.5">{r.band}</span></div>
               <div className="grid place-items-center text-ink"><Gauge value={r.score} size={170} /></div>
               <ul className="mt-1 space-y-2 text-sm">
                 {r.rows.slice(0, 4).map((x) => (<li key={x.name} className="flex items-center gap-2"><span className={`w-2.5 h-2.5 rounded-full ${dot[x.state]}`} />{x.name}<span className="mr-auto text-xs text-gray-500">{stateLabel[x.state]}</span></li>))}
               </ul>
-            </div>
+            </div></Tilt>
             <div className="mt-2 max-w-sm mx-auto"><CarArt /></div>
           </div>
         </div>
@@ -72,7 +75,7 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-4 -mt-0 pt-12">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((s) => (
-            <div key={s.l} className="reveal card p-6 text-center"><div className="text-3xl sm:text-4xl font-black text-brand">{s.v}</div><div className="mt-1 text-sm muted">{s.l}</div></div>
+            <div key={s.l} className="reveal card p-6 text-center"><div className="text-3xl sm:text-4xl font-black text-brand">{s.n !== undefined ? <Counter to={s.n} suffix={s.suffix} /> : s.v}</div><div className="mt-1 text-sm muted">{s.l}</div></div>
           ))}
         </div>
       </section>
@@ -81,12 +84,14 @@ export default function Home() {
       <section id="services" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
         <span className="eyebrow">خدمات</span>
         <h2 className="mt-3 text-3xl sm:text-4xl font-black">هر چه برای یک خرید مطمئن لازم است</h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 snap-row snap-cols-4 no-bar">
           {services.map((s, i) => (
-            <article key={s.title} className={`reveal card lift p-6 ${i === 0 ? "sunburst-soft !border-0 text-white" : ""}`}>
-              <div className={`w-14 h-14 rounded-2xl grid place-items-center ${i === 0 ? "bg-white/20" : "bg-brand-soft text-brand"}`}>{icons[s.icon]}</div>
-              <h3 className="mt-5 text-lg font-black">{s.title}</h3>
-              <p className={`mt-2 text-sm leading-7 ${i === 0 ? "text-white/90" : "muted"}`}>{s.text}</p>
+            <article key={s.title} className="reveal card lift press overflow-hidden flex flex-col">
+              <div className="photo h-44"><img src={photoFor[i]} alt={s.title} loading="lazy" decoding="async" /><div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" /><div className="absolute bottom-3 right-3 w-12 h-12 rounded-2xl bg-brand text-white grid place-items-center shadow-lg">{icons[s.icon]}</div></div>
+              <div className="p-5">
+                <h3 className="text-lg font-black">{s.title}</h3>
+                <p className="mt-2 text-sm leading-7 muted">{s.text}</p>
+              </div>
             </article>
           ))}
         </div>
@@ -133,6 +138,10 @@ export default function Home() {
                 </li>
               ))}
             </ul>
+            <h3 className="mt-6 font-black">تصاویر ثبت‌شده در بازدید</h3>
+            <div className="mt-3 grid grid-cols-3 gap-3">
+              {[["engine", "موتور"], ["interior", "کابین"], ["mustang", "داشبورد"]].map(([k, l]) => (<figure key={k} className="photo rounded-2xl aspect-square"><img src={`/photos/${k}.jpg`} alt={l} loading="lazy" decoding="async" /><figcaption className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 p-2 text-xs text-white font-bold">{l}</figcaption></figure>))}
+            </div>
             <h3 className="mt-6 font-black">وزن هر بخش در نمره</h3>
             <ul className="mt-3 grid sm:grid-cols-2 gap-x-8 gap-y-2.5">
               {checklist.map((c) => (
@@ -172,16 +181,17 @@ export default function Home() {
             <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow w-full justify-center mt-6"><IconInsta />مشاهده‌ی پیج</a>
           </div>
           <div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="snap-row snap-cols-3 no-bar !grid-cols-2 sm:!grid-cols-3">
               {ig.reels.slice(0, 6).map((x, i) => (
-                <a key={x.url} href={x.url} target="_blank" rel="noopener noreferrer" className="reveal lift group relative aspect-[9/14] rounded-3xl overflow-hidden text-white sunburst-soft grain border border-[var(--line)]" style={{ filter: `hue-rotate(${(i % 3) * -4}deg)` }}>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent" />
+                <a key={x.url} href={x.url} target="_blank" rel="noopener noreferrer" className="reveal lift press group relative aspect-[9/14] rounded-3xl overflow-hidden text-white bg-night border border-[var(--line)]">
+                  <img src={["/photos/hero.jpg","/photos/engine.jpg","/photos/lot.jpg","/photos/interior.jpg","/photos/mustang.jpg","/photos/hero.jpg"][i]} alt="" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-brand-dark/20 to-black/10" />
                   <span className="absolute top-3 left-3 w-10 h-10 rounded-full bg-white/25 backdrop-blur grid place-items-center group-hover:bg-yellow group-hover:text-ink transition"><IconPlay /></span>
                   <div className="absolute bottom-0 p-4 z-10"><div className="wordmark text-sm" dir="ltr">khodrography</div><div className="font-bold text-sm mt-1 leading-6">{x.title || "ریل خودروگرافی"}</div><div className="text-xs text-white/80 mt-1">{new Date(x.date).toLocaleDateString("fa-IR")}</div></div>
                 </a>
               ))}
             </div>
-            <p className="mt-4 text-xs muted">{ig.note}</p>
+            <p className="mt-4 text-xs muted">{ig.note} تصاویر کارت‌ها نمونه‌ی آزمایشی‌اند.</p>
           </div>
         </div>
       </section>
@@ -202,6 +212,7 @@ export default function Home() {
       {/* CTA */}
       <section className="mx-auto max-w-6xl px-4 pt-24">
         <div className="reveal sunburst grain relative rounded-[2rem] overflow-hidden text-white text-center px-6 py-16">
+          <img src="/photos/lot.jpg" alt="" aria-hidden loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-25 mix-blend-multiply" />
           <div className="relative z-10">
             <h2 className="text-3xl sm:text-5xl font-black">قبل از پرداخت، نمره‌ی خودرو را ببین</h2>
             <p className="mt-4 text-white/90">در اینستاگرام پیام بده؛ ایجنت ما همین حالا پاسخ می‌دهد.</p>

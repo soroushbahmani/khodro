@@ -18,14 +18,14 @@ const docs = [
 export function Header() {
   return (
     <header className="sticky top-0 z-40 bg-night/80 backdrop-blur-xl text-white border-b border-white/10">
-      <div className="mx-auto max-w-6xl px-4 h-16 flex items-center gap-6">
+      <div className="mx-auto max-w-6xl px-4 h-14 md:h-16 flex items-center gap-6">
         <Link href="/" className="wordmark text-2xl shrink-0" aria-label={brand.name} dir="ltr">{brand.latin}</Link>
-        <nav aria-label="منوی اصلی" className="flex gap-1 overflow-x-auto text-sm whitespace-nowrap [scrollbar-width:none]">
+        <nav aria-label="منوی اصلی" className="hidden md:flex gap-1 overflow-x-auto text-sm whitespace-nowrap [scrollbar-width:none] min-w-0">
           {[...nav, ...docs].map((n) => (
             <a key={n.href} href={n.href} className="px-3 py-2 rounded-full text-white/75 hover:text-white hover:bg-white/10 transition">{n.label}</a>
           ))}
         </nav>
-        <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow !py-2 !px-4 text-sm mr-auto hidden md:inline-flex"><IconInsta />پیام بده</a>
+        <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow !py-2 !px-4 text-sm mr-auto whitespace-nowrap"><IconInsta />پیام بده</a>
       </div>
     </header>
   );
@@ -46,7 +46,7 @@ export function Footer() {
         </div>
         <div>
           <b className="text-white">سند پروژه</b>
-          <ul className="mt-3 space-y-2">{docs.map((n) => <li key={n.href}><a href={n.href} className="hover:text-yellow">{n.label}</a></li>)}</ul>
+          <ul className="mt-3 space-y-2"><li><a href="/credits/" className="hover:text-yellow">منبع تصاویر</a></li>{docs.map((n) => <li key={n.href}><a href={n.href} className="hover:text-yellow">{n.label}</a></li>)}</ul>
           <a href={brand.instagram} target="_blank" rel="noopener noreferrer" dir="ltr" className="mt-4 inline-flex items-center gap-2 hover:text-yellow"><IconInsta />{brand.handle}</a>
         </div>
       </div>

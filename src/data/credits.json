@@ -1,0 +1,32 @@
+{
+ "hero": {
+  "file": "2007 Audi R8.jpg",
+  "author": "Hatsukari715",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:2007_Audi_R8.jpg"
+ },
+ "engine": {
+  "file": "Engine components displayed in a red car during a mechanical inspection",
+  "author": "Shixart1985",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/Special:Search?search=Engine+components+displayed+in+a+red+car+during+a+mechanical+inspection&ns6=1"
+ },
+ "interior": {
+  "file": "Car interior close-up with dashboard controls and charging cable",
+  "author": "Shixart1985",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/Special:Search?search=Car+interior+close-up+with+dashboard+controls&ns6=1"
+ },
+ "mustang": {
+  "file": "1973 Ford Mustang Interior Dashboard",
+  "author": "Eric Friedebach",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/Special:Search?search=1973+Ford+Mustang+Interior+Dashboard&ns6=1"
+ },
+ "lot": {
+  "file": "Used car dealership in Santiago, Chile",
+  "author": "order_242 (Chile)",
+  "license": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Used_car_dealership_in_Santiago,_Chile.jpg"
+ }
+}
