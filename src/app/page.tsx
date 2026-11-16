@@ -160,6 +160,39 @@ export default function Home() {
         </div>
       </section>
 
+      {/* INSTAGRAM AGENT */}
+      <section id="agent" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
+        <div className="grid gap-10 lg:grid-cols-2 items-center">
+          <div>
+            <span className="eyebrow">ایجنت اینستاگرام</span>
+            <h2 className="mt-3 text-3xl sm:text-4xl font-black leading-snug">دایرکت بده؛ ایجنت همان لحظه جواب می‌دهد</h2>
+            <p className="mt-4 muted leading-8">ایجنت هوشمند خودروگرافی در دایرکت اینستاگرام کار می‌کند: سؤال‌های رایج را پاسخ می‌دهد، اطلاعات خودرو و وقت را می‌گیرد، پرونده می‌سازد و اگر لازم شد گفتگو را به همکار انسانی می‌دهد.</p>
+            <ul className="mt-6 space-y-3 text-sm">
+              {["پاسخ شبانه‌روزی به سؤال‌های رایج", "گرفتن مشخصات خودرو، شهر و زمان بدون فرم طولانی", "ساخت خودکار پرونده و خلاصه‌ی دو خطی برای مدیر", "تحویل به انسان وقتی ایجنت نمی‌داند"].map((x) => (<li key={x} className="flex gap-3"><span className="w-6 h-6 shrink-0 rounded-full bg-brand text-white grid place-items-center text-xs">✓</span>{x}</li>))}
+            </ul>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href={brand.dm} target="_blank" rel="noopener noreferrer" className="btn btn-yellow"><IconInsta />شروع در دایرکت</a>
+              <a href="/tools/#dm" className="btn btn-ghost !text-[var(--fg)] !border-[var(--line)]">ساخت پیام آماده</a>
+            </div>
+          </div>
+          <div className="reveal mx-auto w-full max-w-sm rounded-[2.2rem] border-[6px] border-night bg-[var(--card)] shadow-2xl overflow-hidden">
+            <div className="bg-night text-white px-4 py-3 flex items-center gap-3"><div className="ring"><div className="w-9 h-9 rounded-full sunburst-soft grid place-items-center wordmark text-xs" dir="ltr">kg</div></div><div><b className="text-sm">{ig.profile.handle}</b><div className="text-[11px] text-white/60">ایجنت هوشمند · آنلاین</div></div></div>
+            <div className="p-4 space-y-3 min-h-80 bg-[var(--bg)] text-sm leading-7">
+              {[{ me: true, t: "سلام، کارشناسی تالیسمان ۱۴۰۱ چقدر می‌شود؟" }, { t: "سلام 👋 تعرفه به نوع خودرو و محل بازدید بستگی دارد. شهر شما کجاست؟" }, { me: true, t: "اصفهان" }, { t: "عالی؛ کارشناس را برای اصفهان هماهنگ می‌کنم. چه روزی مناسب است؟" }, { me: true, t: "پنجشنبه صبح" }, { t: "ثبت شد ✅ پرونده‌ی شما ساخته شد و همکارمان تأیید نهایی را می‌فرستد." }].map((m, i) => (
+                <div key={i} className={`flex ${m.me ? "justify-start" : "justify-end"}`} style={{ animation: `up .6s ${0.4 + i * 0.7}s both cubic-bezier(.2,.8,.2,1)` }}>
+                  <div className={`max-w-[85%] rounded-2xl px-3.5 py-2 ${m.me ? "bg-brand text-white rounded-br-sm" : "bg-[var(--card)] border border-[var(--line)] rounded-bl-sm"}`}>{m.t}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="mt-12 grid gap-4 sm:grid-cols-3">
+          {[{ t: "ابزار نمره", d: "خودت نمره‌ی خودرو را تخمین بزن", h: "/tools/#score" }, { t: "چک‌لیست بازدید", d: "قبل از دیدن خودرو بخوان", h: "/tools/#guide" }, { t: "دستیار هوشمند", d: "دکمه‌ی چت پایین صفحه", h: "#agent" }].map((x) => (
+            <a key={x.t} href={x.h} className="reveal card lift press p-5 flex items-center gap-3"><div><b>{x.t}</b><div className="text-sm muted">{x.d}</div></div><span className="mr-auto text-brand"><IconArrow /></span></a>
+          ))}
+        </div>
+      </section>
+
       {/* INSTAGRAM */}
       <section id="instagram" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
         <span className="eyebrow">اینستاگرام</span>

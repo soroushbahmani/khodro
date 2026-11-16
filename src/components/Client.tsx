@@ -43,7 +43,7 @@ export function Tilt({ children, className = "" }: { children: React.ReactNode; 
 const tabs = [
   { href: "/", hash: "", label: "خانه", icon: <IconHome /> },
   { href: "/#services", hash: "#services", label: "خدمات", icon: <IconGrid /> },
-  { href: "/#report", hash: "#report", label: "گزارش", icon: <IconReport /> },
+  { href: "/tools/", hash: "", label: "ابزارها", icon: <IconReport /> },
   { href: "/#instagram", hash: "#instagram", label: "اینستا", icon: <IconInsta /> },
   { href: "/requirements/", hash: "", label: "نیازمندی", icon: <IconDoc /> },
 ];
@@ -60,7 +60,7 @@ export function BottomNav() {
     addEventListener("scroll", top, { passive: true });
     return () => { io.disconnect(); removeEventListener("scroll", top); };
   }, [path]);
-  const isOn = (t: (typeof tabs)[number]) => (t.href.startsWith("/requirements") ? path.startsWith("/requirements") : path === "/" && t.hash === active);
+  const isOn = (t: (typeof tabs)[number]) => (t.href.startsWith("/requirements") ? path.startsWith("/requirements") : t.href.startsWith("/tools") ? path.startsWith("/tools") : path === "/" && t.hash === active);
   return (
     <nav aria-label="ناوبری موبایل" className="md:hidden fixed bottom-0 inset-x-0 z-50 px-3 pb-[max(.6rem,env(safe-area-inset-bottom))]">
       <ul className="mx-auto max-w-md grid grid-cols-5 rounded-[1.6rem] bg-night/85 backdrop-blur-xl border border-white/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,.6)] p-1.5 text-white">

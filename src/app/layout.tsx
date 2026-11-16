@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { brand } from "@/data/site";
 import { Header, Footer } from "@/components/Chrome";
+import Assistant from "@/components/Assistant";
 import { BottomNav, ScrollProgress } from "@/components/Client";
 
 const vazir = localFont({
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <BottomNav />
+        <Assistant />
       </body>
     </html>
   );

@@ -6,6 +6,7 @@ const nav = [
   { href: "/#services", label: "خدمات" },
   { href: "/#process", label: "روند کار" },
   { href: "/#report", label: "گزارش نمونه" },
+  { href: "/tools/", label: "ابزارها" },
   { href: "/#instagram", label: "اینستاگرام" },
   { href: "/requirements/", label: "نیازمندی‌ها" },
 ];

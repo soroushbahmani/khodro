@@ -6,6 +6,7 @@ export const brand = {
   description:
     "کارشناسی و بازدید تخصصی خودرو، خرید غیابی و خدمات VIP؛ با گزارش شفاف و نمره‌ی ۰ تا ۱۰۰.",
   instagram: "https://www.instagram.com/khodrography.ir/",
+  dm: "https://ig.me/m/khodrography.ir",
   handle: "@khodrography.ir",
 };
 
