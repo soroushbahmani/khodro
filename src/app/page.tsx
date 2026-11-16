@@ -1,128 +1,220 @@
 import ig from "@/data/instagram.json";
-import { brand, services, steps, scoreBands, checklist, faqs } from "@/data/site";
+import { brand, services, steps, scoreBands, checklist, faqs, sampleReport, stats } from "@/data/site";
+import { IconSearch, IconPin, IconStar, IconCar, IconPlay, IconArrow, IconInsta } from "@/components/Icons";
 
-function Gauge({ value }: { value: number }) {
+const icons: Record<string, React.ReactNode> = { search: <IconSearch />, pin: <IconPin />, star: <IconStar />, car: <IconCar /> };
+const dot: Record<string, string> = { ok: "bg-emerald-500", warn: "bg-yellow", bad: "bg-crimson" };
+const stateLabel: Record<string, string> = { ok: "سالم", warn: "نیاز به توجه", bad: "معیوب" };
+
+function Gauge({ value, size = 200 }: { value: number; size?: number }) {
   const r = 52, c = 2 * Math.PI * r;
   return (
-    <svg viewBox="0 0 140 140" className="w-44 h-44" role="img" aria-label={`نمره ${value} از ۱۰۰`}>
-      <circle cx="70" cy="70" r={r} fill="none" stroke="var(--line)" strokeWidth="14" />
-      <circle cx="70" cy="70" r={r} fill="none" stroke="#d63b22" strokeWidth="14" strokeLinecap="round"
+    <svg viewBox="0 0 140 140" width={size} height={size} role="img" aria-label={`نمره ${value} از ۱۰۰`}>
+      <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stopColor="#f7ce46" /><stop offset="1" stopColor="#d63b22" /></linearGradient></defs>
+      <circle cx="70" cy="70" r={r} fill="none" stroke="currentColor" strokeOpacity=".12" strokeWidth="13" />
+      <circle className="sweep" cx="70" cy="70" r={r} fill="none" stroke="url(#g)" strokeWidth="13" strokeLinecap="round"
         strokeDasharray={`${(value / 100) * c} ${c}`} transform="rotate(-90 70 70)" />
-      <text x="70" y="76" textAnchor="middle" fontSize="34" fontWeight="800" fill="currentColor">{value.toLocaleString("fa-IR")}</text>
+      <text x="70" y="74" textAnchor="middle" fontSize="38" fontWeight="900" fill="currentColor">{value.toLocaleString("fa-IR")}</text>
+      <text x="70" y="94" textAnchor="middle" fontSize="10" fill="currentColor" opacity=".6">از ۱۰۰</text>
+    </svg>
+  );
+}
+
+function CarArt() {
+  return (
+    <svg viewBox="0 0 520 170" className="drive w-full" aria-hidden>
+      <g stroke="#fff" strokeOpacity=".45" strokeWidth="3" strokeLinecap="round"><path d="M10 70h70M0 95h60M20 120h50" /></g>
+      <path d="M95 118c-14 0-20-4-20-14 0-12 8-18 24-22l48-12c12-14 26-26 44-30 30-8 66-8 96 0 22 6 40 20 56 34l44 10c14 3 24 12 24 26 0 6-4 8-10 8h-14" fill="#14161c" />
+      <path d="M150 82l32-6c10-12 22-22 38-26 26-6 56-6 82 0 18 5 32 16 46 30l-28-2z" fill="#f7ce46" opacity=".9" />
+      <path d="M120 118h250" stroke="#14161c" strokeWidth="6" />
+      <g><circle cx="148" cy="120" r="26" fill="#0d1015" /><circle cx="148" cy="120" r="12" fill="#e6f23a" /><circle cx="388" cy="120" r="26" fill="#0d1015" /><circle cx="388" cy="120" r="12" fill="#e6f23a" /></g>
     </svg>
   );
 }
 
 export default function Home() {
+  const r = sampleReport;
   return (
     <>
-      <section className="sunburst text-white">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
-          <div className="wordmark text-5xl sm:text-7xl" dir="ltr">{brand.latin}</div>
-          <h1 className="mt-6 text-3xl sm:text-5xl font-black leading-tight max-w-2xl">{brand.tagline}</h1>
-          <p className="mt-4 max-w-xl text-lg text-white/90">{brand.description}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="rounded-full bg-yellow text-ink font-bold px-6 py-3 hover:brightness-95">پیام در اینستاگرام</a>
-            <a href="#report" className="rounded-full border border-white/70 px-6 py-3 font-bold hover:bg-white/10">گزارش نمونه</a>
+      {/* HERO */}
+      <section className="sunburst grain relative text-white overflow-hidden">
+        <div className="mx-auto max-w-6xl px-4 pt-16 pb-10 lg:pt-24 grid lg:grid-cols-[1.1fr_.9fr] gap-10 items-center">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full bg-black/30 backdrop-blur px-4 py-1.5 text-sm font-bold"><span className="w-2 h-2 rounded-full bg-neon animate-pulse" />متخصص آموزش خرید و فروش خودرو</span>
+            <div className="wordmark text-6xl sm:text-8xl mt-6" dir="ltr">{brand.latin}</div>
+            <h1 className="mt-4 text-3xl sm:text-5xl font-black leading-[1.25]">قبل از خرید، <span className="grad-text">خودرو را بخوان</span></h1>
+            <p className="mt-5 max-w-xl text-lg text-white/90 leading-8">{brand.description}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow"><IconInsta />پیام در اینستاگرام</a>
+              <a href="#report" className="btn btn-ghost">دیدن گزارش نمونه<IconArrow /></a>
+            </div>
+          </div>
+          <div className="relative">
+            <div className="floaty card !bg-white/95 text-ink !border-white/40 p-5 shadow-2xl max-w-sm mx-auto backdrop-blur">
+              <div className="flex items-center justify-between text-xs font-bold"><span>گزارش کارشناسی</span><span className="rounded-full bg-emerald-100 text-emerald-700 px-2 py-0.5">{r.band}</span></div>
+              <div className="grid place-items-center text-ink"><Gauge value={r.score} size={170} /></div>
+              <ul className="mt-1 space-y-2 text-sm">
+                {r.rows.slice(0, 4).map((x) => (<li key={x.name} className="flex items-center gap-2"><span className={`w-2.5 h-2.5 rounded-full ${dot[x.state]}`} />{x.name}<span className="mr-auto text-xs text-gray-500">{stateLabel[x.state]}</span></li>))}
+              </ul>
+            </div>
+            <div className="mt-2 max-w-sm mx-auto"><CarArt /></div>
+          </div>
+        </div>
+        {/* marquee */}
+        <div className="relative bg-night text-yellow font-black text-lg py-3 mt-16 overflow-hidden" dir="ltr" aria-hidden>
+          <div className="marquee">
+            {[0, 1].map((k) => (<div key={k} className="flex shrink-0 gap-10 pr-10">{["کارشناسی خودرو", "خرید غیابی", "خدمات VIP", "گزارش ۰ تا ۱۰۰", "فروش خودرو", "ایجنت ۲۴ ساعته"].map((t) => (<span key={t} className="flex items-center gap-10">{t}<span className="text-brand">◆</span></span>))}</div>))}
           </div>
         </div>
       </section>
 
-      <section id="services" className="mx-auto max-w-6xl px-4 pt-16 scroll-mt-16">
-        <h2 className="text-2xl font-black">خدمات</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((s) => (
-            <article key={s.title} className="card p-5">
-              <div className="text-3xl" aria-hidden>{s.icon}</div>
-              <h3 className="mt-3 font-bold">{s.title}</h3>
-              <p className="mt-2 text-sm muted leading-7">{s.text}</p>
+      {/* STATS */}
+      <section className="mx-auto max-w-6xl px-4 -mt-0 pt-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {stats.map((s) => (
+            <div key={s.l} className="reveal card p-6 text-center"><div className="text-3xl sm:text-4xl font-black text-brand">{s.v}</div><div className="mt-1 text-sm muted">{s.l}</div></div>
+          ))}
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section id="services" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
+        <span className="eyebrow">خدمات</span>
+        <h2 className="mt-3 text-3xl sm:text-4xl font-black">هر چه برای یک خرید مطمئن لازم است</h2>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {services.map((s, i) => (
+            <article key={s.title} className={`reveal card lift p-6 ${i === 0 ? "sunburst-soft !border-0 text-white" : ""}`}>
+              <div className={`w-14 h-14 rounded-2xl grid place-items-center ${i === 0 ? "bg-white/20" : "bg-brand-soft text-brand"}`}>{icons[s.icon]}</div>
+              <h3 className="mt-5 text-lg font-black">{s.title}</h3>
+              <p className={`mt-2 text-sm leading-7 ${i === 0 ? "text-white/90" : "muted"}`}>{s.text}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section id="process" className="mx-auto max-w-6xl px-4 pt-16 scroll-mt-16">
-        <h2 className="text-2xl font-black">روند کار</h2>
-        <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* PROCESS */}
+      <section id="process" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
+        <span className="eyebrow">روند کار</span>
+        <h2 className="mt-3 text-3xl sm:text-4xl font-black">از اولین پیام تا گزارش، چهار قدم</h2>
+        <ol className="relative mt-12 grid gap-8 lg:grid-cols-4">
+          <div className="hidden lg:block absolute top-6 inset-x-12 h-0.5 bg-gradient-to-l from-brand via-yellow to-brand opacity-50" aria-hidden />
           {steps.map((s) => (
-            <li key={s.n} className="card p-5">
-              <span className="inline-grid place-items-center w-9 h-9 rounded-full bg-brand text-white font-black">{s.n}</span>
-              <h3 className="mt-3 font-bold">{s.title}</h3>
+            <li key={s.n} className="reveal relative">
+              <span className="relative z-10 grid place-items-center w-12 h-12 rounded-full sunburst-soft text-white text-xl font-black ring-8 ring-[var(--bg)]">{s.n}</span>
+              <h3 className="mt-4 font-black text-lg">{s.title}</h3>
               <p className="mt-2 text-sm muted leading-7">{s.text}</p>
             </li>
           ))}
         </ol>
       </section>
 
-      <section id="report" className="mx-auto max-w-6xl px-4 pt-16 scroll-mt-16">
-        <h2 className="text-2xl font-black">گزارش نمونه</h2>
+      {/* REPORT */}
+      <section id="report" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
+        <span className="eyebrow">گزارش نمونه</span>
+        <h2 className="mt-3 text-3xl sm:text-4xl font-black">گزارشی که می‌شود به آن اعتماد کرد</h2>
         <p className="mt-2 muted">داده‌ی نمونه برای نمایش؛ گزارش واقعی هر خودرو متفاوت است.</p>
-        <div className="mt-6 grid gap-6 lg:grid-cols-[auto_1fr]">
-          <div className="card p-6 grid place-items-center text-center">
-            <Gauge value={82} />
-            <div className="mt-2 font-black text-lg">خوب</div>
-            <ul className="mt-4 flex flex-wrap gap-2 justify-center text-xs">
-              {scoreBands.map((b) => (
-                <li key={b.label} className="flex items-center gap-1.5"><span className={`w-3 h-3 rounded-full ${b.tone}`} />{b.label} ({b.range})</li>
-              ))}
-            </ul>
+        <div className="reveal mt-10 card overflow-hidden grid lg:grid-cols-[22rem_1fr]">
+          <div className="sunburst-soft grain relative text-white p-8 grid place-items-center text-center">
+            <div className="relative z-10">
+              <div className="text-sm text-white/85">{r.car}</div>
+              <div className="my-2 grid place-items-center text-white"><Gauge value={r.score} size={190} /></div>
+              <div className="text-2xl font-black">{r.band}</div>
+              <p className="mt-2 text-sm text-white/90 leading-7">{r.verdict}</p>
+            </div>
           </div>
-          <div className="card p-6">
-            <h3 className="font-bold">وزن بخش‌های چک‌لیست</h3>
-            <ul className="mt-4 space-y-3">
-              {checklist.map((c) => (
-                <li key={c.name} className="grid grid-cols-[8rem_1fr_2.5rem] items-center gap-3 text-sm">
-                  <span>{c.name}</span>
-                  <span className="h-2.5 rounded-full bg-[var(--line)] overflow-hidden"><span className="block h-full bg-gradient-to-l from-brand to-yellow" style={{ width: `${c.weight * 4}%` }} /></span>
-                  <span className="muted tabular-nums">{c.weight.toLocaleString("fa-IR")}٪</span>
+          <div className="p-6 sm:p-8">
+            <ul className="divide-y divide-[var(--line)]">
+              {r.rows.map((x) => (
+                <li key={x.name} className="py-3 flex items-center gap-3">
+                  <span className={`w-3 h-3 rounded-full ${dot[x.state]}`} />
+                  <span className="font-bold w-36 shrink-0">{x.name}</span>
+                  <span className="text-sm muted">{x.note}</span>
+                  <span className="mr-auto text-xs font-bold muted hidden sm:inline">{stateLabel[x.state]}</span>
                 </li>
               ))}
+            </ul>
+            <h3 className="mt-6 font-black">وزن هر بخش در نمره</h3>
+            <ul className="mt-3 grid sm:grid-cols-2 gap-x-8 gap-y-2.5">
+              {checklist.map((c) => (
+                <li key={c.name} className="grid grid-cols-[7.5rem_1fr_2.2rem] items-center gap-2 text-sm">
+                  <span>{c.name}</span>
+                  <span className="h-2 rounded-full bg-[var(--line)] overflow-hidden"><span className="block h-full rounded-full bg-gradient-to-l from-brand to-yellow" style={{ width: `${c.weight * 4}%` }} /></span>
+                  <span className="muted text-xs">{c.weight.toLocaleString("fa-IR")}٪</span>
+                </li>
+              ))}
+            </ul>
+            <ul className="mt-6 flex flex-wrap gap-3 text-xs">
+              {scoreBands.map((b) => (<li key={b.label} className="flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-1"><span className={`w-2.5 h-2.5 rounded-full ${b.tone}`} />{b.label} · {b.range}</li>))}
             </ul>
             <p className="mt-4 text-xs muted">اگر ایراد حیاتی ثبت شود، نمره‌ی کل بیشتر از ۵۹ نمی‌شود.</p>
           </div>
         </div>
       </section>
 
-      <section id="instagram" className="mx-auto max-w-6xl px-4 pt-16 scroll-mt-16">
-        <h2 className="text-2xl font-black">از اینستاگرام</h2>
-        <div className="mt-6 grid gap-4 lg:grid-cols-[22rem_1fr]">
-          <div className="card p-5">
-            <div className="font-black text-lg">{ig.profile.displayName}</div>
-            <a href={brand.instagram} target="_blank" rel="noopener noreferrer" dir="ltr" className="text-sm text-brand font-bold">@{ig.profile.handle}</a>
-            <p className="mt-3 text-sm"><b>{ig.profile.followers}</b> دنبال‌کننده · <b>{ig.profile.following.toLocaleString("fa-IR")}</b> دنبال‌شونده</p>
-            <ul className="mt-3 text-sm muted space-y-1 list-disc pr-5">{ig.profile.bio.map((b) => <li key={b}>{b}</li>)}</ul>
-            <div className="mt-4 flex flex-wrap gap-2">{ig.profile.highlights.map((h) => <span key={h} className="rounded-full bg-brand-soft text-brand-dark px-3 py-1 text-xs font-bold">{h}</span>)}</div>
+      {/* INSTAGRAM */}
+      <section id="instagram" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
+        <span className="eyebrow">اینستاگرام</span>
+        <h2 className="mt-3 text-3xl sm:text-4xl font-black">خودروگرافی در اینستاگرام</h2>
+        <div className="mt-10 grid gap-6 lg:grid-cols-[21rem_1fr]">
+          <div className="reveal card p-6">
+            <div className="flex items-center gap-4">
+              <div className="ring"><div className="w-16 h-16 rounded-full sunburst-soft grid place-items-center border-2 border-[var(--card)]"><span className="wordmark text-lg" dir="ltr">kg</span></div></div>
+              <div><div className="font-black">{ig.profile.displayName}</div><a href={brand.instagram} target="_blank" rel="noopener noreferrer" dir="ltr" className="text-sm text-brand font-bold">@{ig.profile.handle}</a></div>
+            </div>
+            <div className="mt-5 grid grid-cols-2 gap-3 text-center">
+              <div className="rounded-2xl bg-brand-soft/60 dark:bg-white/5 p-3"><b className="text-xl">{ig.profile.followers}</b><div className="text-xs muted">دنبال‌کننده</div></div>
+              <div className="rounded-2xl bg-brand-soft/60 dark:bg-white/5 p-3"><b className="text-xl">{ig.profile.following.toLocaleString("fa-IR")}</b><div className="text-xs muted">دنبال‌شونده</div></div>
+            </div>
+            <ul className="mt-5 text-sm muted space-y-1.5 leading-7">{ig.profile.bio.map((b) => <li key={b}>• {b}</li>)}</ul>
+            <div className="mt-5 flex gap-3 overflow-x-auto pb-1">
+              {ig.profile.highlights.map((h) => (<div key={h} className="text-center shrink-0 w-16"><div className="ring mx-auto w-14 h-14"><div className="w-full h-full rounded-full bg-[var(--card)] grid place-items-center text-brand"><IconStar /></div></div><div className="text-[10px] mt-1 leading-4">{h}</div></div>))}
+            </div>
+            <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow w-full justify-center mt-6"><IconInsta />مشاهده‌ی پیج</a>
           </div>
-          <div className="card p-5">
-            <h3 className="font-bold">آخرین ریل‌ها</h3>
-            <ul className="mt-3 grid gap-2 sm:grid-cols-2 text-sm">
-              {ig.reels.map((r) => (
-                <li key={r.url}><a href={r.url} target="_blank" rel="noopener noreferrer" className="block rounded-lg border border-[var(--line)] p-3 hover:border-brand">
-                  <span className="muted text-xs">{new Date(r.date).toLocaleDateString("fa-IR")}</span><br />{r.title || "ریل"}</a></li>
+          <div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {ig.reels.slice(0, 6).map((x, i) => (
+                <a key={x.url} href={x.url} target="_blank" rel="noopener noreferrer" className="reveal lift group relative aspect-[9/14] rounded-3xl overflow-hidden text-white sunburst-soft grain border border-[var(--line)]" style={{ filter: `hue-rotate(${(i % 3) * -4}deg)` }}>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent" />
+                  <span className="absolute top-3 left-3 w-10 h-10 rounded-full bg-white/25 backdrop-blur grid place-items-center group-hover:bg-yellow group-hover:text-ink transition"><IconPlay /></span>
+                  <div className="absolute bottom-0 p-4 z-10"><div className="wordmark text-sm" dir="ltr">khodrography</div><div className="font-bold text-sm mt-1 leading-6">{x.title || "ریل خودروگرافی"}</div><div className="text-xs text-white/80 mt-1">{new Date(x.date).toLocaleDateString("fa-IR")}</div></div>
+                </a>
               ))}
-            </ul>
-            <p className="mt-3 text-xs muted">{ig.note}</p>
+            </div>
+            <p className="mt-4 text-xs muted">{ig.note}</p>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pt-16">
-        <h2 className="text-2xl font-black">سؤال‌های رایج</h2>
-        <div className="mt-6 space-y-3">
+      {/* FAQ */}
+      <section className="mx-auto max-w-3xl px-4 pt-24">
+        <div className="text-center"><span className="eyebrow">سؤال‌های رایج</span><h2 className="mt-3 text-3xl sm:text-4xl font-black">هرچه می‌خواهی بدانی</h2></div>
+        <div className="mt-10 space-y-3">
           {faqs.map((f) => (
-            <details key={f.q} className="card p-4">
-              <summary className="cursor-pointer font-bold">{f.q}</summary>
-              <p className="mt-2 muted leading-7">{f.a}</p>
+            <details key={f.q} className="reveal card lift p-5 group">
+              <summary className="cursor-pointer font-black flex items-center gap-3">{f.q}<span className="plus mr-auto text-2xl text-brand transition-transform">+</span></summary>
+              <p className="mt-3 muted leading-8">{f.a}</p>
             </details>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pt-16">
-        <div className="card p-8 grid gap-4 sm:grid-cols-3 text-center">
-          <a href="/requirements/" className="rounded-xl p-4 hover:bg-brand-soft hover:text-ink"><b>نیازمندی‌ها</b><br /><span className="text-sm muted">فهرست کامل با اولویت و پلن</span></a>
-          <a href="/demo/" className="rounded-xl p-4 hover:bg-brand-soft hover:text-ink"><b>دموی کلیکی</b><br /><span className="text-sm muted">پنل مدیر، چت ایجنت، گزارش</span></a>
-          <a href="/wireframe/" className="rounded-xl p-4 hover:bg-brand-soft hover:text-ink"><b>وایرفریم</b><br /><span className="text-sm muted">همه‌ی صفحه‌ها در یک نگاه</span></a>
+      {/* CTA */}
+      <section className="mx-auto max-w-6xl px-4 pt-24">
+        <div className="reveal sunburst grain relative rounded-[2rem] overflow-hidden text-white text-center px-6 py-16">
+          <div className="relative z-10">
+            <h2 className="text-3xl sm:text-5xl font-black">قبل از پرداخت، نمره‌ی خودرو را ببین</h2>
+            <p className="mt-4 text-white/90">در اینستاگرام پیام بده؛ ایجنت ما همین حالا پاسخ می‌دهد.</p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow"><IconInsta />شروع گفتگو</a>
+              <a href="/demo/" className="btn btn-ghost">دموی سامانه</a>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          {[{ h: "/requirements/", t: "نیازمندی‌ها", d: "فهرست کامل با اولویت و پلن" }, { h: "/prd/", t: "PRD و رقبا", d: "فلوچارت، معماری و مقایسه" }, { h: "/wireframe/", t: "وایرفریم", d: "همه‌ی صفحه‌ها در یک نگاه" }].map((x) => (
+            <a key={x.h} href={x.h} className="reveal card lift p-5 flex items-center gap-3"><div><b>{x.t}</b><div className="text-sm muted">{x.d}</div></div><span className="mr-auto text-brand"><IconArrow /></span></a>
+          ))}
         </div>
       </section>
     </>
