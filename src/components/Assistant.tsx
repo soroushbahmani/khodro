@@ -1,6 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { brand, faqs, services } from "@/data/site";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 type Msg = { from: "bot" | "me"; text: string; cta?: boolean };
 type Slots = { car?: string; city?: string; service?: string };
@@ -22,7 +28,6 @@ export default function Assistant() {
   const [typing, setTyping] = useState(false);
   const end = useRef<HTMLDivElement>(null);
   useEffect(() => { end.current?.scrollIntoView({ block: "end" }); }, [msgs, typing, open]);
-  useEffect(() => { document.body.style.overflow = open && matchMedia("(max-width:767px)").matches ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [open]);
 
   const say = (text: string, cta = false) => { setTyping(true); setTimeout(() => { setTyping(false); setMsgs((m) => [...m, { from: "bot", text, cta }]); }, 650); };
 
@@ -47,7 +52,7 @@ export default function Assistant() {
   };
 
   const send = (text: string) => { const v = text.trim(); if (!v) return; setMsgs((m) => [...m, { from: "me", text: v }]); setInput(""); reply(v); };
-  const toDm = async (text: string) => { try { await navigator.clipboard.writeText(text); } catch {} window.open(brand.dm, "_blank", "noopener"); };
+  const toDm = async (text: string) => { try { await navigator.clipboard.writeText(text); toast.success("متن کپی شد؛ در دایرکت پیست کن"); } catch {} window.open(brand.dm, "_blank", "noopener"); };
 
   return (
     <>
@@ -55,32 +60,36 @@ export default function Assistant() {
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M9 11h.01M12 11h.01M15 11h.01"/></svg>
         <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-neon animate-ping opacity-70" />
       </button>
-      {open && (
-        <div role="dialog" aria-label="دستیار هوشمند" className="fixed inset-0 z-[70] md:inset-auto md:left-6 md:bottom-6 md:w-[24rem] md:h-[34rem] flex flex-col bg-[var(--card)] md:rounded-3xl md:border border-[var(--line)] shadow-2xl overflow-hidden" style={{ animation: "up .35s both cubic-bezier(.2,.8,.2,1)" }}>
-          <div className="sunburst-soft text-white px-4 pt-[max(.75rem,env(safe-area-inset-top))] pb-3 flex items-center gap-3">
-            <img src="/brand/avatar.jpg" alt="خودروگرافی" width="150" height="150" className="w-10 h-10 rounded-full object-cover border-2 border-white/60" />
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="bottom" showCloseButton={false} className="h-[88dvh] md:h-[34rem] md:w-[24rem] md:inset-x-auto md:bottom-6 md:left-6 md:rounded-3xl md:border rounded-t-3xl gap-0 p-0 overflow-hidden">
+          <SheetTitle className="sr-only">دستیار هوشمند خودروگرافی</SheetTitle>
+          <SheetDescription className="sr-only">گفتگو با دستیار آزمایشی و ساخت پیام دایرکت</SheetDescription>
+          <div className="sunburst-soft text-white px-4 pt-4 pb-3 flex items-center gap-3">
+            <Avatar className="size-10 border-2 border-white/60"><AvatarImage src="/brand/avatar.jpg" alt="" /><AvatarFallback>KG</AvatarFallback></Avatar>
             <div><b>دستیار {brand.name}</b><div className="text-xs text-white/85 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-neon" />آنلاین · نسخه‌ی آزمایشی</div></div>
-            <button onClick={() => setOpen(false)} aria-label="بستن" className="mr-auto w-10 h-10 rounded-full bg-black/25 text-xl press">×</button>
+            <Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label="بستن" className="mr-auto rounded-full bg-black/25 text-white hover:bg-black/40 hover:text-white text-xl">×</Button>
           </div>
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 no-bar" aria-live="polite">
-            {msgs.map((m, i) => (
-              <div key={i} className={`flex ${m.from === "me" ? "justify-start" : "justify-end"}`} style={{ animation: "up .3s both" }}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-7 whitespace-pre-line ${m.from === "me" ? "bg-brand text-white rounded-br-sm" : "bg-[var(--bg)] border border-[var(--line)] rounded-bl-sm"}`}>
-                  {m.text}
-                  {m.cta && <button onClick={() => toDm(m.text.includes("خلاصه") ? summary(slots) : "سلام، می‌خواهم درباره‌ی خدمات خودروگرافی بپرسم.")} className="btn btn-yellow !py-2 !px-4 !text-sm mt-3 w-full justify-center">ارسال در دایرکت اینستاگرام</button>}
+          <ScrollArea className="flex-1 min-h-0">
+            <div className="p-4 space-y-3" aria-live="polite">
+              {msgs.map((m, i) => (
+                <div key={i} className={`flex ${m.from === "me" ? "justify-start" : "justify-end"}`} style={{ animation: "up .3s both" }}>
+                  <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-7 whitespace-pre-line ${m.from === "me" ? "bg-primary text-primary-foreground rounded-br-sm" : "bg-muted border rounded-bl-sm"}`}>
+                    {m.text}
+                    {m.cta && <Button onClick={() => toDm(m.text.includes("خلاصه") ? summary(slots) : "سلام، می‌خواهم درباره‌ی خدمات خودروگرافی بپرسم.")} className="mt-3 w-full rounded-full font-extrabold bg-accent text-accent-foreground hover:bg-accent/90">ارسال در دایرکت اینستاگرام</Button>}
+                  </div>
                 </div>
-              </div>
-            ))}
-            {typing && <div className="flex justify-end"><div className="rounded-2xl bg-[var(--bg)] border border-[var(--line)] px-4 py-3 flex gap-1">{[0, 1, 2].map((k) => <span key={k} className="w-2 h-2 rounded-full bg-brand animate-bounce" style={{ animationDelay: `${k * 0.15}s` }} />)}</div></div>}
-            <div ref={end} />
-          </div>
-          {msgs.length < 3 && <div className="px-3 pb-2 flex gap-2 overflow-x-auto no-bar">{chips.map((c) => <button key={c} onClick={() => send(c)} className="shrink-0 rounded-full border border-[var(--line)] px-3 py-1.5 text-xs font-bold press">{c}</button>)}</div>}
-          <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="p-3 pb-[max(.75rem,env(safe-area-inset-bottom))] border-t border-[var(--line)] flex gap-2">
-            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="پیامت را بنویس…" aria-label="پیام" className="flex-1 min-w-0 rounded-full bg-[var(--bg)] border border-[var(--line)] px-4 py-3 text-base" />
-            <button className="btn btn-yellow !px-5 !py-3" aria-label="ارسال">ارسال</button>
+              ))}
+              {typing && <div className="flex justify-end"><div className="rounded-2xl bg-muted border px-4 py-3 flex gap-1">{[0, 1, 2].map((k) => <span key={k} className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: `${k * 0.15}s` }} />)}</div></div>}
+              <div ref={end} />
+            </div>
+          </ScrollArea>
+          {msgs.length < 3 && <div className="px-3 pb-2 flex gap-2 overflow-x-auto no-bar">{chips.map((c) => <Button key={c} variant="outline" size="sm" onClick={() => send(c)} className="shrink-0 rounded-full text-xs font-bold h-8">{c}</Button>)}</div>}
+          <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="p-3 pb-[max(.75rem,env(safe-area-inset-bottom))] border-t flex gap-2">
+            <Input value={input} onChange={(e) => setInput(e.target.value)} placeholder="پیامت را بنویس…" aria-label="پیام" className="h-11 rounded-full text-base" />
+            <Button type="submit" className="h-11 rounded-full px-5 font-extrabold bg-accent text-accent-foreground hover:bg-accent/90">ارسال</Button>
           </form>
-        </div>
-      )}
+        </SheetContent>
+      </Sheet>
     </>
   );
 }

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import groups from "@/data/requirements.json";
 import nf from "@/data/nonfunctional.json";
 import Filter from "./Filter";
 
-export const metadata: Metadata = { title: "نیازمندی‌ها", description: "فهرست کامل نیازمندی‌های سامانه‌ی خودروگرافی با اولویت و پلن." };
+export const metadata: Metadata = pageMeta("نیازمندی‌ها", "فهرست کامل نیازمندی‌های سامانه‌ی خودروگرافی با اولویت و پلن: ایجنت اینستاگرام، پنل‌ها، چک‌لیست، حسابداری و سایت.", "/requirements/");
 
 export default function Requirements() {
   return (

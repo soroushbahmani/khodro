@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import credits from "@/data/credits.json";
 
-export const metadata: Metadata = { title: "منبع تصاویر" };
+export const metadata: Metadata = pageMeta("منبع تصاویر", "منبع و مجوز تصاویر نمونه‌ی سایت خودروگرافی.", "/credits/");
 
 export default function Credits() {
   return (

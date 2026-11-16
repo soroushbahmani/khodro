@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { ScoreTool, MessageTool, Guide } from "./Tools";
 
-export const metadata: Metadata = { title: "ابزارهای هوشمند", description: "محاسبه‌ی نمره‌ی خودرو، ساخت پیام دایرکت و راهنمای بازدید پیش از خرید." };
+export const metadata: Metadata = pageMeta("ابزارهای هوشمند", "محاسبه‌ی نمره‌ی خودرو، ساخت پیام دایرکت و چک‌لیست بازدید پیش از خرید؛ همه‌چیز روی گوشی خودت اجرا می‌شود.", "/tools/");
 
 export default function Tools() {
   return (

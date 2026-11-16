@@ -1,3 +1,10 @@
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import ig from "@/data/instagram.json";
 import { brand, services, steps, scoreBands, checklist, faqs, sampleReport, stats } from "@/data/site";
 import { Counter, Tilt } from "@/components/Client";
@@ -34,6 +41,11 @@ function CarArt() {
   );
 }
 
+const cta = "rounded-full h-12 px-7 text-base font-extrabold";
+const yellow = "bg-accent text-accent-foreground hover:bg-accent/90 shadow-[0_10px_30px_-10px_rgba(247,206,70,.7)]";
+const ghostW = "border-white/70 bg-transparent text-white hover:bg-white/15 hover:text-white";
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (<Badge variant="secondary" className="rounded-full px-3 py-1 h-auto text-xs font-extrabold">{children}</Badge>);
+
 export default function Home() {
   const r = sampleReport;
   return (
@@ -48,8 +60,8 @@ export default function Home() {
             <h1 className="in3 mt-4 text-3xl sm:text-5xl font-black leading-[1.25]">قبل از خرید، <span className="grad-text">خودرو را بخوان</span></h1>
             <p className="in3 mt-5 max-w-xl text-base sm:text-lg text-white/90 leading-8">{brand.description}</p>
             <div className="in4 mt-8 flex flex-wrap gap-3">
-              <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow"><IconInsta />پیام در اینستاگرام</a>
-              <a href="#report" className="btn btn-ghost">دیدن گزارش نمونه<IconArrow /></a>
+              <Button asChild className={`${cta} ${yellow}`}><a href={brand.instagram} target="_blank" rel="noopener noreferrer"><IconInsta />پیام در اینستاگرام</a></Button>
+              <Button asChild variant="outline" className={`${cta} ${ghostW}`}><a href="#report">دیدن گزارش نمونه<IconArrow /></a></Button>
             </div>
           </div>
           <div className="relative">
@@ -82,24 +94,24 @@ export default function Home() {
 
       {/* SERVICES */}
       <section id="services" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
-        <span className="eyebrow">خدمات</span>
+        <Eyebrow>خدمات</Eyebrow>
         <h2 className="mt-3 text-3xl sm:text-4xl font-black">هر چه برای یک خرید مطمئن لازم است</h2>
         <div className="mt-10 snap-row snap-cols-4 no-bar">
           {services.map((s, i) => (
-            <article key={s.title} className="reveal card lift press overflow-hidden flex flex-col">
+            <Card key={s.title} className="reveal lift press overflow-hidden flex flex-col rounded-3xl py-0 gap-0">
               <div className="photo h-44"><img src={photoFor[i]} alt={s.title} loading="lazy" decoding="async" /><div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" /><div className="absolute bottom-3 right-3 w-12 h-12 rounded-2xl bg-brand text-white grid place-items-center shadow-lg">{icons[s.icon]}</div></div>
               <div className="p-5">
                 <h3 className="text-lg font-black">{s.title}</h3>
                 <p className="mt-2 text-sm leading-7 muted">{s.text}</p>
               </div>
-            </article>
+            </Card>
           ))}
         </div>
       </section>
 
       {/* PROCESS */}
       <section id="process" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
-        <span className="eyebrow">روند کار</span>
+        <Eyebrow>روند کار</Eyebrow>
         <h2 className="mt-3 text-3xl sm:text-4xl font-black">از اولین پیام تا گزارش، چهار قدم</h2>
         <ol className="relative mt-12 grid gap-8 lg:grid-cols-4">
           <div className="hidden lg:block absolute top-6 inset-x-12 h-0.5 bg-gradient-to-l from-brand via-yellow to-brand opacity-50" aria-hidden />
@@ -115,7 +127,7 @@ export default function Home() {
 
       {/* REPORT */}
       <section id="report" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
-        <span className="eyebrow">گزارش نمونه</span>
+        <Eyebrow>گزارش نمونه</Eyebrow>
         <h2 className="mt-3 text-3xl sm:text-4xl font-black">گزارشی که می‌شود به آن اعتماد کرد</h2>
         <p className="mt-2 muted">داده‌ی نمونه برای نمایش؛ گزارش واقعی هر خودرو متفاوت است.</p>
         <div className="reveal mt-10 card overflow-hidden grid lg:grid-cols-[22rem_1fr]">
@@ -147,7 +159,7 @@ export default function Home() {
               {checklist.map((c) => (
                 <li key={c.name} className="grid grid-cols-[7.5rem_1fr_2.2rem] items-center gap-2 text-sm">
                   <span>{c.name}</span>
-                  <span className="h-2 rounded-full bg-[var(--line)] overflow-hidden"><span className="block h-full rounded-full bg-gradient-to-l from-brand to-yellow" style={{ width: `${c.weight * 4}%` }} /></span>
+                  <Progress value={c.weight * 4} className="[&_[data-slot=progress-indicator]]:bg-gradient-to-l [&_[data-slot=progress-indicator]]:from-brand [&_[data-slot=progress-indicator]]:to-yellow" aria-label={c.name} />
                   <span className="muted text-xs">{c.weight.toLocaleString("fa-IR")}٪</span>
                 </li>
               ))}
@@ -164,15 +176,15 @@ export default function Home() {
       <section id="agent" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
         <div className="grid gap-10 lg:grid-cols-2 items-center">
           <div>
-            <span className="eyebrow">ایجنت اینستاگرام</span>
+            <Eyebrow>ایجنت اینستاگرام</Eyebrow>
             <h2 className="mt-3 text-3xl sm:text-4xl font-black leading-snug">دایرکت بده؛ ایجنت همان لحظه جواب می‌دهد</h2>
             <p className="mt-4 muted leading-8">ایجنت هوشمند خودروگرافی در دایرکت اینستاگرام کار می‌کند: سؤال‌های رایج را پاسخ می‌دهد، اطلاعات خودرو و وقت را می‌گیرد، پرونده می‌سازد و اگر لازم شد گفتگو را به همکار انسانی می‌دهد.</p>
             <ul className="mt-6 space-y-3 text-sm">
               {["پاسخ شبانه‌روزی به سؤال‌های رایج", "گرفتن مشخصات خودرو، شهر و زمان بدون فرم طولانی", "ساخت خودکار پرونده و خلاصه‌ی دو خطی برای مدیر", "تحویل به انسان وقتی ایجنت نمی‌داند"].map((x) => (<li key={x} className="flex gap-3"><span className="w-6 h-6 shrink-0 rounded-full bg-brand text-white grid place-items-center text-xs">✓</span>{x}</li>))}
             </ul>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={brand.dm} target="_blank" rel="noopener noreferrer" className="btn btn-yellow"><IconInsta />شروع در دایرکت</a>
-              <a href="/tools/#dm" className="btn btn-ghost !text-[var(--fg)] !border-[var(--line)]">ساخت پیام آماده</a>
+              <Button asChild className={`${cta} ${yellow}`}><a href={brand.dm} target="_blank" rel="noopener noreferrer"><IconInsta />شروع در دایرکت</a></Button>
+              <Button asChild variant="outline" className={cta}><a href="/tools/#dm">ساخت پیام آماده</a></Button>
             </div>
           </div>
           <div className="reveal mx-auto w-full max-w-sm rounded-[2.2rem] border-[6px] border-night bg-[var(--card)] shadow-2xl overflow-hidden">
@@ -195,12 +207,12 @@ export default function Home() {
 
       {/* INSTAGRAM */}
       <section id="instagram" className="mx-auto max-w-6xl px-4 pt-24 scroll-mt-20">
-        <span className="eyebrow">اینستاگرام</span>
+        <Eyebrow>اینستاگرام</Eyebrow>
         <h2 className="mt-3 text-3xl sm:text-4xl font-black">خودروگرافی در اینستاگرام</h2>
         <div className="mt-10 grid gap-6 lg:grid-cols-[21rem_1fr]">
           <div className="reveal card p-6">
             <div className="flex items-center gap-4">
-              <div className="ring"><img src="/brand/avatar.jpg" alt="خودروگرافی" width="150" height="150" className="w-16 h-16 rounded-full object-cover border-2 border-[var(--card)]" /></div>
+              <div className="ring"><Avatar className="size-16 border-2 border-card"><AvatarImage src="/brand/avatar.jpg" alt="خودروگرافی" /><AvatarFallback>KG</AvatarFallback></Avatar></div>
               <div><div className="font-black">{ig.profile.displayName}</div><a href={brand.instagram} target="_blank" rel="noopener noreferrer" dir="ltr" className="text-sm text-brand font-bold">@{ig.profile.handle}</a></div>
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3 text-center">
@@ -211,19 +223,25 @@ export default function Home() {
             <div className="mt-5 flex gap-3 overflow-x-auto pb-1">
               {ig.profile.highlights.map((h) => (<div key={h} className="text-center shrink-0 w-16"><div className="ring mx-auto w-14 h-14"><div className="w-full h-full rounded-full bg-[var(--card)] grid place-items-center text-brand"><IconStar /></div></div><div className="text-[10px] mt-1 leading-4">{h}</div></div>))}
             </div>
-            <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow w-full justify-center mt-6"><IconInsta />مشاهده‌ی پیج</a>
+            <Button asChild className={`${cta} ${yellow} w-full mt-6`}><a href={brand.instagram} target="_blank" rel="noopener noreferrer"><IconInsta />مشاهده‌ی پیج</a></Button>
           </div>
           <div>
-            <div className="snap-row snap-cols-3 no-bar !grid-cols-2 sm:!grid-cols-3">
-              {ig.reels.slice(0, 6).map((x, i) => (
-                <a key={x.url} href={x.url} target="_blank" rel="noopener noreferrer" className="reveal lift press group relative aspect-[9/14] rounded-3xl overflow-hidden text-white bg-night border border-[var(--line)]">
-                  <img src={["/photos/hero.jpg","/photos/engine.jpg","/photos/lot.jpg","/photos/interior.jpg","/photos/mustang.jpg","/photos/hero.jpg"][i]} alt="" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" />
+            <Carousel opts={{ align: "start", direction: "rtl" }} className="px-0">
+              <CarouselContent>
+                {ig.reels.map((x, i) => (
+                  <CarouselItem key={x.url} className="basis-[68%] sm:basis-1/3">
+                    <a href={x.url} target="_blank" rel="noopener noreferrer" className="reveal lift press group relative aspect-[9/14] rounded-3xl overflow-hidden text-white bg-night border border-[var(--line)]">
+                  <img src={["/photos/hero.jpg","/photos/engine.jpg","/photos/lot.jpg","/photos/interior.jpg","/photos/mustang.jpg","/photos/hero.jpg"][i % 6]} alt="" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-brand-dark/20 to-black/10" />
                   <span className="absolute top-3 left-3 w-10 h-10 rounded-full bg-white/25 backdrop-blur grid place-items-center group-hover:bg-yellow group-hover:text-ink transition"><IconPlay /></span>
                   <div className="absolute bottom-0 p-4 z-10"><div className="wordmark text-sm" dir="ltr">khodrography</div><div className="font-bold text-sm mt-1 leading-6">{x.title || "ریل خودروگرافی"}</div><div className="text-xs text-white/80 mt-1">{new Date(x.date).toLocaleDateString("fa-IR")}</div></div>
                 </a>
-              ))}
-            </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden sm:flex" />
+              <CarouselNext className="hidden sm:flex" />
+            </Carousel>
             <p className="mt-4 text-xs muted">{ig.note} تصاویر کارت‌ها نمونه‌ی آزمایشی‌اند.</p>
           </div>
         </div>
@@ -231,15 +249,15 @@ export default function Home() {
 
       {/* FAQ */}
       <section className="mx-auto max-w-3xl px-4 pt-24">
-        <div className="text-center"><span className="eyebrow">سؤال‌های رایج</span><h2 className="mt-3 text-3xl sm:text-4xl font-black">هرچه می‌خواهی بدانی</h2></div>
-        <div className="mt-10 space-y-3">
-          {faqs.map((f) => (
-            <details key={f.q} className="reveal card lift p-5 group">
-              <summary className="cursor-pointer font-black flex items-center gap-3">{f.q}<span className="plus mr-auto text-2xl text-brand transition-transform">+</span></summary>
-              <p className="mt-3 muted leading-8">{f.a}</p>
-            </details>
+        <div className="text-center"><Eyebrow>سؤال‌های رایج</Eyebrow><h2 className="mt-3 text-3xl sm:text-4xl font-black">هرچه می‌خواهی بدانی</h2></div>
+        <Accordion type="single" collapsible className="mt-10 space-y-3">
+          {faqs.map((f, i) => (
+            <AccordionItem key={f.q} value={`q${i}`} className="reveal rounded-2xl border bg-card px-5 not-last:border-b">
+              <AccordionTrigger className="py-5 text-base font-black hover:no-underline">{f.q}</AccordionTrigger>
+              <AccordionContent className="text-base leading-8 text-muted-foreground">{f.a}</AccordionContent>
+            </AccordionItem>
           ))}
-        </div>
+        </Accordion>
       </section>
 
       {/* CTA */}
@@ -250,8 +268,8 @@ export default function Home() {
             <h2 className="text-3xl sm:text-5xl font-black">قبل از پرداخت، نمره‌ی خودرو را ببین</h2>
             <p className="mt-4 text-white/90">در اینستاگرام پیام بده؛ ایجنت ما همین حالا پاسخ می‌دهد.</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a href={brand.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-yellow"><IconInsta />شروع گفتگو</a>
-              <a href="/demo/" className="btn btn-ghost">دموی سامانه</a>
+              <Button asChild className={`${cta} ${yellow}`}><a href={brand.instagram} target="_blank" rel="noopener noreferrer"><IconInsta />شروع گفتگو</a></Button>
+              <Button asChild variant="outline" className={`${cta} ${ghostW}`}><a href="/demo/">دموی سامانه</a></Button>
             </div>
           </div>
         </div>
