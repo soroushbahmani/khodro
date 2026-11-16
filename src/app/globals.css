@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-vazir), ui-sans-serif, system-ui, sans-serif;
+  --color-brand: #d63b22;
+  --color-brand-dark: #b32a16;
+  --color-brand-soft: #fdece8;
+  --color-yellow: #f7ce46;
+  --color-sky: #3f7bd0;
+  --color-neon: #e6f23a;
+  --color-ink: #14161c;
+  --color-night: #0d1015;
+  --color-crimson: #be123c;
+}
+
+:root { --bg: #f6f3f0; --card: #ffffff; --fg: #14161c; --muted: #6b6f7a; --line: #e8e3df; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0d1015; --card: #161a22; --fg: #f1efed; --muted: #a2a7b3; --line: #262b36; }
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 1.25rem; }
+.muted { color: var(--muted); }
+.sunburst {
+  background: repeating-conic-gradient(from 8deg at 85% 135%, #d63b22 0 6deg, #b32a16 6deg 12deg);
+}
+.wordmark {
+  font-style: italic; font-weight: 900; letter-spacing: -.02em; color: var(--color-neon);
+  text-shadow: 2px 2px 0 rgba(0,0,0,.35);
+}
+:focus-visible { outline: 3px solid var(--color-yellow); outline-offset: 2px; }

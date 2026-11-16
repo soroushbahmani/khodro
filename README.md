@@ -1,12 +1,17 @@
-# خودروگرافی
+# خودروگرافی (khodrography)
 
-سایت ایستا (بدون build) شامل سه صفحه‌ی به‌هم‌وصل:
+سایت کاملاً ایستا با Next.js (export) و Tailwind 4؛ داده‌ها در `src/data` تا بعداً به پنل ادمین وصل شوند.
 
 | مسیر | محتوا |
 |---|---|
-| `/` | سند PRD و بررسی رقبا |
-| `/demo/` | دموی کلیکی (DaisyUI 5 + Tailwind 4 از CDN)؛ لینک مستقیم: `/demo/#inbox`، `/demo/#report?role=inspector&theme=dark` |
-| `/wireframe/` | وایرفریم صفحه‌ها |
+| `/` | سایت معرفی |
+| `/requirements/` | نیازمندی‌ها با فیلتر |
+| `/prd/` | PRD، فلوچارت‌ها و رقبا (HTML ایستا در `public/prd`) |
+| `/demo/` | دموی کلیکی (`public/demo`) |
+| `/wireframe/` | وایرفریم (`public/wireframe`) |
 
-اجرای محلی: `python3 -m http.server` و باز کردن `http://localhost:8000`.
-دیپلوی: `vercel --prod`.
+```bash
+pnpm install
+pnpm dev      # توسعه
+pnpm build    # خروجی ایستا در out/
+```

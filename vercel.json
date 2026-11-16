@@ -1,13 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
+  "framework": "nextjs",
   "trailingSlash": true,
   "redirects": [
-    { "source": "/khodrografi-prd.html", "destination": "/", "permanent": true },
+    { "source": "/khodrografi-prd.html", "destination": "/prd/", "permanent": true },
     { "source": "/khodrografi-demo.html", "destination": "/demo/", "permanent": true },
     { "source": "/khodrografi-wireframe.html", "destination": "/wireframe/", "permanent": true }
-  ],
-  "headers": [
-    { "source": "/fonts/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] }
   ]
 }
